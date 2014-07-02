@@ -47,7 +47,7 @@ module Cribbage
                           MARGIN * 3,
                           PLAYER_HAND.y - BUTTON_HEIGHT * 2 )
 
-    SCORE             = Point.new( WIDTH - CARD_SIZE.width, MARGIN )
+    SCORE_POS         = Point.new( WIDTH - CARD_SIZE.width, MARGIN )
     SCORE_BOX_HEIGHT  = 64
     
     # Colours
