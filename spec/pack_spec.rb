@@ -1,4 +1,4 @@
-require_relative '../card'
+require 'card'
 
 describe Cribbage::Pack do
   before :each do
@@ -6,7 +6,7 @@ describe Cribbage::Pack do
   end
 
   it 'should deal exactly 52 cards' do
-    52.times do |time|
+    52.times do
       # Must be done first, because the 52nd time it'll be true after deal!
       expect( @pack.empty? ).to eq false
       expect( @pack.deal ).to_not eq nil
