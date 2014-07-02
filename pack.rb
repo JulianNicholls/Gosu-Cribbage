@@ -1,4 +1,4 @@
-# require 'constants'
+require 'constants'
 
 module Cribbage
   # Represent a pack of cards as a 1..52 array and deal cards from it.
@@ -39,74 +39,73 @@ module Cribbage
     attr_reader :cards_left
   end
 
-#   # A pack that can display itself on a Gosu window
-#   class GosuPack < Pack
-#     include Region
-#     include CribbageGame::Constants
-#
-#     def initialize
-#       super
-#
-#       @fan, @fan_cards = nil, {}
-#     end
-#
-#     def reset
-#       super
-#       @fan, @fan_cards = nil, {}
-#     end
-#
-#     def deal
-#       super( GosuCard )
-#     end
-#
-#     alias_method :cut, :deal
-#
-#     def set_images( front, back )
-#       @front, @back = front, back
-#     end
-#
-#     def place( pos )
-#       set_area( pos, CARD_SIZE )
-#     end
-#
-#     def draw
-#       @back.draw( left, top, 1 )
-#     end
-#
-#     def draw_fan( point, gap, options )
-#       generate_fan( point, gap ) unless @fan
-#
-#       @fan.each { |c| c.draw( options ) }
-#       @fan_cards.keys.each { |k| @fan_cards[k].draw( orient: :face_up ) }
-#     end
-#
-#     def generate_fan( point, gap )
-#       @fan = []
-#       pos = point.dup
-#
-#       until empty?
-#         card = deal
-#         card.place( pos )
-#         @fan.push card
-#
-#         pos.move_by!( gap, 0 )
-#       end
-#     end
-#
-#     def card_from_fan( point, turn = :player )
-#       # Must traverse from the right, because cards overlap each other
-#
-#       @fan.reverse_each do |c|
-#         if c.inside?( point )
-#           @fan_cards[turn] = c
-#           delta = CARD_SIZE.height + CARD_GAP
-#           @fan_cards[turn].move_by!( 0, turn == :player ? delta : -delta )
-#
-#           return c
-#         end
-#       end
-#
-#       nil   # Nothing chosen
-#     end
-#   end
+  # A pack that can display itself on a Gosu window
+  class GosuPack < Pack
+    include Constants
+
+    def initialize
+      super
+
+      @fan, @fan_cards = nil, {}
+    end
+
+    def reset
+      super
+      @fan, @fan_cards = nil, {}
+    end
+
+    def deal
+      super( GosuCard )
+    end
+
+    alias_method :cut, :deal
+
+    def set_images( front, back )
+      @front, @back = front, back
+    end
+
+    def place( pos )
+      set_area( pos, CARD_SIZE )
+    end
+
+    def draw
+      @back.draw( left, top, 1 )
+    end
+
+    def draw_fan( point, gap, options )
+      generate_fan( point, gap ) unless @fan
+
+      @fan.each { |c| c.draw( options ) }
+      @fan_cards.keys.each { |k| @fan_cards[k].draw( orient: :face_up ) }
+    end
+
+    def generate_fan( point, gap )
+      @fan = []
+      pos = point.dup
+
+      until empty?
+        card = deal
+        card.place( pos )
+        @fan.push card
+
+        pos.move_by!( gap, 0 )
+      end
+    end
+
+    def card_from_fan( point, turn = :player )
+      # Must traverse from the right, because cards overlap each other
+
+      @fan.reverse_each do |c|
+        if c.inside?( point )
+          @fan_cards[turn] = c
+          delta = CARD_SIZE.height + CARD_GAP
+          @fan_cards[turn].move_by!( 0, turn == :player ? delta : -delta )
+
+          return c
+        end
+      end
+
+      nil   # Nothing chosen
+    end
+  end
 end
