@@ -1,4 +1,4 @@
-require_relative '../scorer'
+require 'scorer'
 
 require 'spec_helper'
 

@@ -15,6 +15,12 @@ module Cribbage
   class Game < Gosu::Window
     include Constants
     
+    KEY_FUNCS = {
+       Gosu::KbEscape =>  -> { close },
+
+       Gosu::MsLeft   =>  -> { @position = Point.new( mouse_x, mouse_y ) }
+    }
+
     attr_reader :font, :image
     
     def initialize
@@ -38,6 +44,10 @@ module Cribbage
       @drawer.background
     end
   
+    def button_down( code )
+      instance_exec( &KEY_FUNCS[code] ) if KEY_FUNCS.key? code
+    end
+    
     private
   
     def load_resources
