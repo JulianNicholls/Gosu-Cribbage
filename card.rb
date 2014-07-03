@@ -88,7 +88,7 @@ module Cribbage
       @pos = Region.new( pos, CARD_SIZE )
     end
 
-    def draw( options )
+    def draw( options = {} )
       orient = options[:orient] || :face_down
 
       draw_image( options )
@@ -109,7 +109,7 @@ module Cribbage
     def draw_text( options )
       cfont = options[:font] || font
       cfont.draw( display_name,
-                  left + 5, top + 5, 1,
+                  @pos.left + 5, @pos.top + 5, 1,
                   1, 1,
                   suit.odd? ? RED_COLOUR : Gosu::Color::BLACK
       )

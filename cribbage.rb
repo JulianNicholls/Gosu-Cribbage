@@ -17,11 +17,13 @@ module Cribbage
     
     KEY_FUNCS = {
        Gosu::KbEscape =>  -> { close },
+       Gosu::KbR      =>  -> { reset },
 
        Gosu::MsLeft   =>  -> { @position = Point.new( mouse_x, mouse_y ) }
     }
 
     attr_reader :font, :image
+    attr_reader :cpu_hand, :player_hand
     
     def initialize
       super( WIDTH, HEIGHT, false, 50 )
@@ -29,7 +31,13 @@ module Cribbage
       self.caption = 'Gosu Cribbage 2.0'
       
       load_resources
+      
       @drawer = Drawer.new( self )
+      
+      GosuCard.set_display( image[:front], image[:back], font[:card] )
+      GosuPack.set_back_image( image[:back] )
+      
+      reset
     end
     
     def need_cursor?
@@ -42,6 +50,7 @@ module Cribbage
     
     def draw
       @drawer.background
+      @drawer.cards
     end
   
     def button_down( code )
@@ -55,6 +64,20 @@ module Cribbage
     
       @image = @loader.images
       @font  = @loader.fonts
+    end
+    
+    def reset
+      set_up_cards
+    end
+    
+    def set_up_cards
+      @pack         = GosuPack.new
+      @player_hand  = GosuHand.new( @pack )
+      @cpu_hand     = GosuHand.new( @pack )
+      
+      @pack.set_position( PACK_POS )
+      @player_hand.set_positions( PLAYER_HAND_POS, FANNED_GAP * 2 )
+      @cpu_hand.set_positions( CPU_HAND_POS, FANNED_GAP * 2 )
     end
   end
 end

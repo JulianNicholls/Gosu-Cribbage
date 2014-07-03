@@ -42,7 +42,7 @@ module Cribbage
      end
    end
 
-   def draw( options )
+   def draw( options = {} )
      @cards.each { |c| c.draw( options ) }
    end
  end

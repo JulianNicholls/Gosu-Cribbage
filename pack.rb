@@ -43,6 +43,14 @@ module Cribbage
   class GosuPack < Pack
     include Constants
 
+    def self.set_back_image( back )
+      @back = back
+    end
+
+    class << self
+      attr_reader :back
+    end
+    
     def initialize
       super
 
@@ -60,16 +68,12 @@ module Cribbage
 
     alias_method :cut, :deal
 
-    def set_images( front, back )
-      @front, @back = front, back
-    end
-
-    def place( pos )
-      set_area( pos, CARD_SIZE )
+    def set_position( pos )
+      @pos = Region.new( pos, CARD_SIZE )
     end
 
     def draw
-      @back.draw( left, top, 1 )
+      back_image.draw( @pos.left, @pos.top, 1 )
     end
 
     def draw_fan( point, gap, options )
@@ -106,6 +110,12 @@ module Cribbage
       end
 
       nil   # Nothing chosen
+    end
+    
+    private
+    
+    def back_image
+      self.class.back
     end
   end
 end
