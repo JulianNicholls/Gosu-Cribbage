@@ -40,7 +40,7 @@ module Cribbage
       reset
     end
     
-    def need_cursor?
+    def needs_cursor?
       true
     end
     
