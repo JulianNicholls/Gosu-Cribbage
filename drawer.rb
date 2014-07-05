@@ -7,6 +7,15 @@ module Cribbage
       @game = game
     end
 
+    def draw
+      background
+      cards
+      instructions
+      scores
+    end
+
+    private
+
     def background
       @game.draw_rectangle( Point.new( 0, 0 ), Size.new( WIDTH, HEIGHT ), 0, BAIZE )
 
@@ -47,14 +56,27 @@ module Cribbage
         inst[:text], left, top + size.height / 2, 7, 1, 1, Gosu::Color::WHITE )
     end
 
-    private
+    # TODO: Score Reason
+    def scores
+      player    = 'Player '
+      font      = @game.font[:score]
+      size      = font.measure( player )
+
+      font.draw( 'CPU', SCORE_POS.x, SCORE_POS.y, 1, 1, 1, SCORE_TEXT )
+      font.draw( @game.score[:cpu], SCORE_POS.x + size.width, SCORE_POS.y, 
+                 1, 1, 1, SCORE_NUM )
+
+      font.draw( player, SCORE_POS.x, SCORE_POS.y + size.height, 
+                 1, 1, 1, SCORE_TEXT )
+      font.draw( @game.score[:player], SCORE_POS.x + size.width,
+                 SCORE_POS.y + size.height, 1, 1, 1, SCORE_NUM )
+    end
 
     def score_box
       box  = Point.new( SCORE_POS.x - (MARGIN + 2), 1 )
       size = Size.new( WIDTH - (SCORE_POS.x - MARGIN), SCORE_BOX_HEIGHT )
 
       @game.draw_rectangle( box, size, 0, SCORE_TEXT )
-
       @game.draw_rectangle( box.offset( 1, 1 ), size.deflate( 2, 2 ), 0, SCORE_BKGR )
     end
 
