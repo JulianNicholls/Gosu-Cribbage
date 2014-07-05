@@ -49,18 +49,17 @@ module Cribbage
 
     SCORE_POS         = Point.new( WIDTH - CARD_SIZE.width, MARGIN )
     SCORE_BOX_HEIGHT  = 64
-    
+
     # Colours
-    
+
     BAIZE             = Gosu::Color.new( 0xff007000 )
     WATERMARK         = Gosu::Color.new( 0x20000000 )
 
     SCORE_BKGR        = Gosu::Color.new( 0xff005000 )
     SCORE_TEXT        = Gosu::Color.new( 0xffffcc00 )
     SCORE_NUM         = Gosu::Color.new( 0xffffff00 )
-    
+
     ARROW             = Gosu::Color.new( 0xf0ffcc00 )
     DISCARD           = Gosu::Color.new( 0xff104ec2 )
   end
 end
-    

@@ -62,9 +62,9 @@ module Cribbage
   class GosuCard < Card
     include Constants
     extend Forwardable
-    
+
     def_delegators :@region, :contains?, :move_by!
-    
+
     RED_COLOUR   = 0xffa00000
 
     def self.set_display( front, back, font )
@@ -79,15 +79,15 @@ module Cribbage
     class << self
       attr_reader :images, :font
     end
-    
+
     def font
       self.class.font
     end
-    
+
     def images
       self.class.images
     end
-    
+
     def place( pos )
       @region = Region.new( pos, CARD_SIZE )
     end
@@ -101,7 +101,7 @@ module Cribbage
     end
 
     private
-    
+
     def draw_image( options )
       if options[:orient] == :face_up
         image = options[:front] || images[:front]

@@ -35,7 +35,7 @@ module Cribbage
 
    def set_positions( point, gap )
      pos = point.dup
-     
+
      @cards.each do |c|
        c.place( pos )
        pos.move_by!( gap, 0 )

@@ -50,7 +50,7 @@ module Cribbage
     class << self
       attr_reader :back
     end
-    
+
     def initialize
       super
 
@@ -94,7 +94,7 @@ module Cribbage
 
         pos.move_by!( gap, 0 )
       end
-      
+
       cards
     end
 
@@ -113,9 +113,9 @@ module Cribbage
 
       nil   # Nothing chosen
     end
-    
+
     private
-    
+
     def back_image
       self.class.back
     end
