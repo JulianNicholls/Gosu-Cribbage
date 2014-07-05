@@ -45,5 +45,19 @@ module Cribbage
     def draw( options = {} )
       @cards.each { |c| c.draw( options ) }
     end
+
+    def card_index( point )
+      # Must traverse from the right, because cards overlap each other
+      # Index *increases*, i.e. it's *not* the index into the array
+
+      @cards.reverse_each.with_index do |card, idx|
+        next unless card.contains?( point )
+
+        return (@cards.size - 1) - idx
+      end
+
+      nil   # Nothing chosen
+    end
+
   end
 end

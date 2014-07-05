@@ -104,12 +104,19 @@ module Cribbage
     def update_cut_complete
       set_up_cards
       @phase = :discard
+      @dis_cards = []
     end
     
     def update_discard
       @instructions ||= { text: 'Select Cards for Discarding' }
       
       return if @position.nil?
+      
+      card = @player_hand.card_index( @position )
+      
+      select_card( card ) unless card.nil?
+
+      @position = nil
     end
 
     def load_resources
@@ -159,6 +166,19 @@ module Cribbage
         @dealer = :cpu
       else
         return false  # Undecided, due to a draw
+      end
+    end
+    
+    # TODO: Discard button
+    def select_card( card )
+      didx = @dis_cards.index card
+      
+      if didx
+        @dis_cards.slice! didx
+        @player_hand.cards[card].move_by!( 0, CARD_GAP )
+      elsif @dis_cards.size < 2
+        @dis_cards << card
+        @player_hand.cards[card].move_by!( 0, -CARD_GAP )
       end
     end
   end
