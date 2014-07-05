@@ -76,36 +76,38 @@ module Cribbage
       back_image.draw( @pos.left, @pos.top, 1 )
     end
 
-    def draw_fan( point, gap, options )
-      generate_fan( point, gap ) unless @fan
+    def draw_fan( point, gap, options = {} )
+      @fan ||= generate_fan( point, gap )
 
       @fan.each { |c| c.draw( options ) }
       @fan_cards.keys.each { |k| @fan_cards[k].draw( orient: :face_up ) }
     end
 
     def generate_fan( point, gap )
-      @fan = []
-      pos = point.dup
+      cards = []
+      pos   = point.dup
 
       until empty?
         card = deal
         card.place( pos )
-        @fan.push card
+        cards << card
 
         pos.move_by!( gap, 0 )
       end
+      
+      cards
     end
 
     def card_from_fan( point, turn = :player )
       # Must traverse from the right, because cards overlap each other
 
-      @fan.reverse_each do |c|
-        if c.inside?( point )
-          @fan_cards[turn] = c
+      @fan.reverse_each do |card|
+        if card.contains?( point )
+          @fan_cards[turn] = card
           delta = CARD_SIZE.height + CARD_GAP
-          @fan_cards[turn].move_by!( 0, turn == :player ? delta : -delta )
+          card.move_by!( 0, turn == :player ? delta : -delta )
 
-          return c
+          return card
         end
       end
 
