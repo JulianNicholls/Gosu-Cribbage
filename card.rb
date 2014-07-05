@@ -1,4 +1,5 @@
 require 'gosu_enhanced'
+require 'forwardable'
 
 require 'constants'
 
@@ -60,6 +61,9 @@ module Cribbage
   # Card that can display itself
   class GosuCard < Card
     include Constants
+    extend Forwardable
+    
+    def_delegators :@region, :contains?, :move_by!
     
     RED_COLOUR   = 0xffa00000
 
@@ -85,7 +89,7 @@ module Cribbage
     end
     
     def place( pos )
-      @pos = Region.new( pos, CARD_SIZE )
+      @region = Region.new( pos, CARD_SIZE )
     end
 
     def draw( options = {} )
@@ -96,6 +100,8 @@ module Cribbage
       draw_text( options ) if orient == :face_up || orient == :peep
     end
 
+    private
+    
     def draw_image( options )
       if options[:orient] == :face_up
         image = options[:front] || images[:front]
@@ -103,13 +109,13 @@ module Cribbage
         image = options[:back] || images[:back]
       end
 
-      image.draw( @pos.left, @pos.top, 1 )
+      image.draw( @region.left, @region.top, 1 )
     end
 
     def draw_text( options )
       cfont = options[:font] || font
       cfont.draw( display_name,
-                  @pos.left + 5, @pos.top + 5, 1,
+                  @region.left + 5, @region.top + 5, 1,
                   1, 1,
                   suit.odd? ? RED_COLOUR : Gosu::Color::BLACK
       )
