@@ -22,28 +22,28 @@ module Cribbage
     end
   end
 
- # Hand of Cards that can be displayed in a Gosu window
- class GosuHand < Hand
-   def initialize( pack, copy = nil )
-     @cards = copy ? copy : Array.new( 6 ) { pack.deal }
-     @cards.sort_by!( &:rank )
-   end
+  # Hand of Cards that can be displayed in a Gosu window
+  class GosuHand < Hand
+    def initialize( pack, copy = nil )
+      @cards = copy ? copy : Array.new( 6 ) { pack.deal }
+      @cards.sort_by!( &:rank )
+    end
 
-   def dup
-     GosuHand.new( nil, cards.dup )
-   end
+    def dup
+      GosuHand.new( nil, cards.dup )
+    end
 
-   def set_positions( point, gap )
-     pos = point.dup
+    def set_positions( point, gap )
+      pos = point.dup
 
-     @cards.each do |c|
-       c.place( pos )
-       pos.move_by!( gap, 0 )
-     end
-   end
+      @cards.each do |c|
+        c.place( pos )
+        pos.move_by!( gap, 0 )
+      end
+    end
 
-   def draw( options = {} )
-     @cards.each { |c| c.draw( options ) }
-   end
- end
+    def draw( options = {} )
+      @cards.each { |c| c.draw( options ) }
+    end
+  end
 end

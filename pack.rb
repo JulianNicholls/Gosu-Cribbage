@@ -43,12 +43,8 @@ module Cribbage
   class GosuPack < Pack
     include Constants
 
-    def self.set_back_image( back )
-      @back = back
-    end
-
     class << self
-      attr_reader :back
+      attr_accessor :back
     end
 
     def initialize
@@ -68,7 +64,7 @@ module Cribbage
 
     alias_method :cut, :deal
 
-    def set_position( pos )
+    def place( pos )
       @pos = Region.new( pos, CARD_SIZE )
     end
 
@@ -102,13 +98,13 @@ module Cribbage
       # Must traverse from the right, because cards overlap each other
 
       @fan.reverse_each do |card|
-        if card.contains?( point )
-          @fan_cards[turn] = card
-          delta = CARD_SIZE.height + CARD_GAP
-          card.move_by!( 0, turn == :player ? delta : -delta )
+        next unless card.contains?( point )
 
-          return card
-        end
+        @fan_cards[turn] = card
+        delta = CARD_SIZE.height + CARD_GAP
+        card.move_by!( 0, turn == :player ? delta : -delta )
+
+        return card
       end
 
       nil   # Nothing chosen

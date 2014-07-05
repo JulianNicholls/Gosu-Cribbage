@@ -16,10 +16,10 @@ module Cribbage
     include Constants
 
     KEY_FUNCS = {
-       Gosu::KbEscape =>  -> { close },
-       Gosu::KbR      =>  -> { reset },
+      Gosu::KbEscape =>  -> { close },
+      Gosu::KbR      =>  -> { reset },
 
-       Gosu::MsLeft   =>  -> { @position = Point.new( mouse_x, mouse_y ) }
+      Gosu::MsLeft   =>  -> { @position = Point.new( mouse_x, mouse_y ) }
     }
 
     attr_reader :font, :image, :delay
@@ -36,7 +36,7 @@ module Cribbage
       @drawer = Drawer.new( self )
 
       GosuCard.set_display( image[:front], image[:back], font[:card] )
-      GosuPack.set_back_image( image[:back] )
+      GosuPack.back = image[:back]
 
       reset
     end
@@ -67,7 +67,7 @@ module Cribbage
     private
 
     def update_initial_cut
-      @instructions = { text: 'Cut card for Deal', top: 400 }
+      @instructions = { text: 'Cut Cards for Deal', top: 400 }
 
       return if @position.nil?
 
@@ -84,8 +84,8 @@ module Cribbage
     end
 
     def update_cpu_cut
-      point = Point.new( rand( FAN_POS.x..(FAN_POS.x + 51 * CARD_GAP) ),
-              PACK_POS.y + 10 )
+      x     = rand( FAN_POS.x...(FAN_POS.x + 51 * CARD_GAP) )
+      point = Point.new( x, PACK_POS.y + 10 )
 
       @cut_cards[:cpu] = @pack.card_from_fan( point, :cpu )
 
@@ -123,7 +123,7 @@ module Cribbage
       @player_hand  = GosuHand.new( @pack )
       @cpu_hand     = GosuHand.new( @pack )
 
-      @pack.set_position( PACK_POS )
+      @pack.place( PACK_POS )
       @player_hand.set_positions( PLAYER_HAND_POS, FANNED_GAP * 2 )
       @cpu_hand.set_positions( CPU_HAND_POS, FANNED_GAP * 2 )
     end

@@ -4,7 +4,7 @@ module Cribbage
   # A cribbage hand scorer
   class Scorer
     attr_accessor :crib
-    attr_reader   :scores
+    attr_reader :scores
 
     def initialize( hand, turncard, crib = false )
       @crib = crib

@@ -11,8 +11,8 @@ module Cribbage
       @game.draw_rectangle( Point.new( 0, 0 ), Size.new( WIDTH, HEIGHT ), 0, BAIZE )
 
       # 'Watermark' on the background
-      @game.font[:watermark].draw( 'The Julio', WATERMARK_POS.x, WATERMARK_POS.y, 0,
-                              1, 1, WATERMARK )
+      @game.font[:watermark].draw(
+        'The Julio', WATERMARK_POS.x, WATERMARK_POS.y, 0, 1, 1, WATERMARK )
 
       score_box
 
@@ -32,8 +32,7 @@ module Cribbage
     def instructions
       return unless @game.instructions
 
-      inst = @game.instructions
-
+      inst    = @game.instructions
       font    = @game.font[:instructions]
       size    = font.measure inst[:text]
       margin  = font.text_width 'X'
@@ -44,8 +43,8 @@ module Cribbage
       @game.draw_rectangle( Point.new( left - margin, top ),
         Size.new( size.width + margin * 2, size.height * 2 ), 6, WATERMARK )
 
-      font.draw( inst[:text], left, top + size.height / 2, 7,
-        1, 1, Gosu::Color::WHITE )
+      font.draw(
+        inst[:text], left, top + size.height / 2, 7, 1, 1, Gosu::Color::WHITE )
     end
 
     private
