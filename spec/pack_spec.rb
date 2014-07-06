@@ -9,10 +9,10 @@ describe Cribbage::Pack do
     52.times do
       # Must be done first, because the 52nd time it'll be true after deal!
       expect( @pack.empty? ).to eq false
-      expect( @pack.deal ).to_not eq nil
+      expect( @pack.deal ).to_not be_nil
     end
 
-    expect( @pack.deal ).to eq nil
+    expect( @pack.deal ).to be_nil
     expect( @pack.empty? ).to eq true
   end
 

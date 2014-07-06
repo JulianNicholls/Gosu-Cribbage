@@ -3,7 +3,7 @@ require 'hand'
 require 'spec_helper'
 
 module Cribbage
-  #
+  # Test version that allows access to the held cards
   class Hand
     attr_accessor :cards
   end
@@ -17,7 +17,7 @@ describe Cribbage::Hand do
 
   describe '#initialize' do
     it 'should deal 6 cards' do
-      expect( @hand.cards.length ).to eq 6
+      expect( @hand.cards.size ).to eq 6
     end
 
     it 'should store cards in ascending rank/value order' do
@@ -30,13 +30,13 @@ describe Cribbage::Hand do
     it 'should allow discarding of two cards' do
       updated_hand = @hand.cards.dup
       updated_hand.slice!( 1, 2 )   # 1 for 2
-      @hand.discard( *[1, 2] )       # 1 and 2
-      expect( @hand.cards.length ).to eq 4
+      @hand.discard( *[1, 2] )      # 1 and 2
+      expect( @hand.cards.size ).to eq 4
       expect( @hand.cards ).to eq updated_hand
 
       updated_hand.slice!( 1, 2 )   # 1 for 2
       @hand.discard( 2, 1 )         # 1 and 2
-      expect( @hand.cards.length ).to eq 2
+      expect( @hand.cards.size ).to eq 2
       expect( @hand.cards ).to eq updated_hand
     end
 
