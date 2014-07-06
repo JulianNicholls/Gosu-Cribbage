@@ -16,6 +16,5 @@ basically.
 - [ ] Score Crib
 - [ ] Start next Round
 - [ ] Complete a Game to 121 points
-
 - [ ] More Intelligence in CPU Discard
 - [ ] More Intelligence in CPU Play to 31

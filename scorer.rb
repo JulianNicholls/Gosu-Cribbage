@@ -1,4 +1,4 @@
-require './hand'
+require 'hand'
 
 module Cribbage
   # A cribbage hand scorer
@@ -72,7 +72,6 @@ module Cribbage
       all_same  = cards.all? { |c| c.suit == suit }
       score     = !@crib && all_same ? 4 : 0
       score     = 5 if all_same && @turncard.suit == suit
-      score
     end
 
     # Jack in hand matches turn card suit

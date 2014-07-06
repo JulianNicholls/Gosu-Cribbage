@@ -7,11 +7,11 @@ module Cribbage
 
     def fonts
       {
-        watermark:      Gosu::Font.new( @game, 'Brush Script Std', 130 ),
-        score:          Gosu::Font.new( @game, 'Times New Roman', 18 ),
-        instructions:   Gosu::Font.new( @game, 'Times New Roman', 28 ),
-        card:           Gosu::Font.new( @game, Gosu.default_font_name, 24 ),
-        button:         Gosu::Font.new( @game, Gosu.default_font_name, 24 )
+        watermark:    Gosu::Font.new( @game, 'Brush Script Std', 130 ),
+        score:        Gosu::Font.new( @game, Gosu.default_font_name, 18 ),
+        instructions: Gosu::Font.new( @game, Gosu.default_font_name, 28 ),
+        card:         Gosu::Font.new( @game, Gosu.default_font_name, 24 ),
+        button:       Gosu::Font.new( @game, Gosu.default_font_name, 24 )
       }
     end
 

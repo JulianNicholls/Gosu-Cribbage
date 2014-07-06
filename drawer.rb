@@ -10,7 +10,7 @@ module Cribbage
     def draw
       background
       cards
-      instructions
+      instructions unless @game.instructions.nil?
       scores
       buttons
     end
@@ -35,13 +35,13 @@ module Cribbage
       end
 
       @game.player_hand.draw( orient: :face_up )
-      @game.cpu_hand.draw
+      @game.cpu_hand.draw( orient: :peep )
       @game.pack.draw
+
+      @game.image[:back].draw( CRIB_POS.x, CRIB_POS.y, 1)
     end
 
     def instructions
-      return unless @game.instructions
-
       inst    = @game.instructions
       font    = @game.font[:instructions]
       size    = font.measure inst[:text]

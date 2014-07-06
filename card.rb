@@ -97,7 +97,7 @@ module Cribbage
 
       draw_image( options )
 
-      draw_text( options ) if orient == :face_up || orient == :peep
+      draw_text( options ) if [:face_up, :peep].include? orient
     end
 
     private
@@ -115,10 +115,8 @@ module Cribbage
     def draw_text( options )
       cfont = options[:font] || font
       cfont.draw( display_name,
-                  @region.left + 5, @region.top + 5, 1,
-                  1, 1,
-                  suit.odd? ? RED_COLOUR : Gosu::Color::BLACK
-      )
+                  @region.left + 5, @region.top + 5, 1, 1, 1,
+                  suit.odd? ? RED_COLOUR : Gosu::Color::BLACK )
     end
   end
 end
