@@ -12,6 +12,7 @@ module Cribbage
       cards
       instructions
       scores
+      buttons
     end
 
     private
@@ -63,13 +64,17 @@ module Cribbage
       size      = font.measure( player )
 
       font.draw( 'CPU', SCORE_POS.x, SCORE_POS.y, 1, 1, 1, SCORE_TEXT )
-      font.draw( @game.score[:cpu], SCORE_POS.x + size.width, SCORE_POS.y, 
+      font.draw( @game.score[:cpu], SCORE_POS.x + size.width, SCORE_POS.y,
                  1, 1, 1, SCORE_NUM )
 
-      font.draw( player, SCORE_POS.x, SCORE_POS.y + size.height, 
+      font.draw( player, SCORE_POS.x, SCORE_POS.y + size.height,
                  1, 1, 1, SCORE_TEXT )
       font.draw( @game.score[:player], SCORE_POS.x + size.width,
                  SCORE_POS.y + size.height, 1, 1, 1, SCORE_NUM )
+    end
+
+    def buttons
+      @game.discard_btn.draw
     end
 
     def score_box

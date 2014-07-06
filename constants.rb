@@ -43,7 +43,7 @@ module Cribbage
     PLAY31_POS        = CPU_HAND_POS.offset( 0, CARD_SIZE.height + CARD_GAP * 2 )
 
     BUTTON_HEIGHT     = 40
-    DISCARD_BUTTON    = Point.new(    # Discard Button
+    DISCARD_BTN_POS   = Point.new(    # Discard Button
                           MARGIN * 3,
                           PLAYER_HAND_POS.y - BUTTON_HEIGHT * 2 )
 
