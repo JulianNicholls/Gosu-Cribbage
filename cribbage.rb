@@ -10,6 +10,8 @@ require 'hand'
 require 'resources'
 require 'drawer'
 
+require 'button'
+
 module Cribbage
   # Game Class
   class Game < Gosu::Window
@@ -22,9 +24,9 @@ module Cribbage
       Gosu::MsLeft   =>  -> { @position = Point.new( mouse_x, mouse_y ) }
     }
 
-    attr_reader :font, :image, :delay, :score
-    attr_accessor :phase, :instructions
-    attr_accessor :cpu_hand, :player_hand, :pack, :turn_card, :turn
+    attr_reader :font, :image, :delay, :score, :discard_btn
+    attr_accessor :phase, :instructions, :turn
+    attr_accessor :cpu_hand, :player_hand, :pack, :turn_card, :crib
 
     def initialize
       super( WIDTH, HEIGHT, false, 50 )
@@ -33,7 +35,8 @@ module Cribbage
 
       load_resources
 
-      @drawer = Drawer.new( self )
+      @drawer       = Drawer.new( self )
+      @discard_btn  = TextButton.new( self, DISCARD_BTN_POS, DISCARD, 'Discard' )
 
       GosuCard.set_display( image[:front], image[:back], font[:card] )
       GosuPack.back = image[:back]
@@ -48,6 +51,8 @@ module Cribbage
     def update
       return if delay != 0 && Time.now < delay
 
+      @delay = 0
+
       update_proc = "update_#{phase}"
       return send( update_proc ) if respond_to?( update_proc, true )
 
@@ -61,7 +66,7 @@ module Cribbage
     def button_down( code )
       instance_exec( &KEY_FUNCS[code] ) if KEY_FUNCS.key? code
     end
-    
+
     def delay=( value )
       @delay = Time.now + value
     end
@@ -97,7 +102,7 @@ module Cribbage
       @cut_cards[:cpu] = @pack.card_from_fan( point, :cpu )
 
       self.delay = 1.5
-      
+
       @phase = decide_dealer ? :cut_complete : :initial_recut
     end
 
@@ -105,18 +110,36 @@ module Cribbage
       set_up_cards
       @phase = :discard
       @dis_cards = []
+      @crib = []
     end
-    
+
     def update_discard
       @instructions ||= { text: 'Select Cards for Discarding' }
-      
+
       return if @position.nil?
-      
+
       card = @player_hand.card_index( @position )
-      
-      select_card( card ) unless card.nil?
+
+      if card.nil?
+        discard_to_crib if @discard_btn.contains? @position
+      else
+        select_card( card )
+      end
 
       @position = nil
+    end
+
+    # TODO: Add Intelligence
+    def update_cpu_discard
+      s1, s2 = rand( 0..5 ), rand( 0..5 )
+      s2 = ((s1 + 1) % 6) if s1 == s2
+
+      add_cards_to_crib( @cpu_hand.cards[s1], @cpu_hand.cards[s2] )
+
+      @cpu_hand.discard( s1, s2 )
+
+      self.delay = 1
+      @phase = :turn_card
     end
 
     def load_resources
@@ -145,20 +168,20 @@ module Cribbage
       @player_hand.set_positions( PLAYER_HAND_POS, FANNED_GAP * 2 )
       @cpu_hand.set_positions( CPU_HAND_POS, FANNED_GAP * 2 )
     end
-    
+
     def player_cut_card
       cut_card = @pack.card_from_fan( @position, :player )
 
       @position = nil
 
       return unless cut_card
-      
+
       @cut_cards[:player] = cut_card
       @instructions = nil
       @phase = :cpu_cut
       self.delay = 1
     end
-    
+
     def decide_dealer
       if @cut_cards[:player].rank < @cut_cards[:cpu].rank
         @dealer = :player
@@ -167,12 +190,13 @@ module Cribbage
       else
         return false  # Undecided, due to a draw
       end
+
+      @turn = other_player @dealer
     end
-    
-    # TODO: Discard button
+
     def select_card( card )
       didx = @dis_cards.index card
-      
+
       if didx
         @dis_cards.slice! didx
         @player_hand.cards[card].move_by!( 0, CARD_GAP )
@@ -180,6 +204,28 @@ module Cribbage
         @dis_cards << card
         @player_hand.cards[card].move_by!( 0, -CARD_GAP )
       end
+
+      @discard_btn.visible = @dis_cards.size == 2
+    end
+
+    def discard_to_crib
+      add_cards_to_crib(
+        @player_hand.cards[@dis_cards[0]], @player_hand.cards[@dis_cards[1]]
+      )
+
+      @player_hand.discard( *@dis_cards )
+      @discard_btn.hide
+      @instructions = nil
+      self.delay = 1
+      @phase = :cpu_discard
+    end
+
+    def add_cards_to_crib( c1, c2 )
+      @crib.push( c1, c2 )
+    end
+
+    def other_player( cur )
+      cur == :cpu ? :player : :cpu
     end
   end
 end
