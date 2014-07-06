@@ -34,6 +34,8 @@ module Cribbage
     end
 
     def set_positions( point, gap )
+      @pos, @gap = point, gap
+
       pos = point.dup
 
       @cards.each do |c|
@@ -59,5 +61,10 @@ module Cribbage
       nil   # Nothing chosen
     end
 
+    def discard( *discards )
+      super # Do the discard
+
+      set_positions( @pos, @gap ) # Reset the positions
+    end
   end
 end
