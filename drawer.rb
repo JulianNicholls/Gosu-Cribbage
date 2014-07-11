@@ -69,6 +69,7 @@ module Cribbage
 
       font.draw( player, SCORE_POS.x, SCORE_POS.y + size.height,
                  1, 1, 1, SCORE_TEXT )
+
       font.draw( @game.score[:player], SCORE_POS.x + size.width,
                  SCORE_POS.y + size.height, 1, 1, 1, SCORE_NUM )
     end
