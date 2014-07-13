@@ -5,7 +5,7 @@ require 'constants'
 
 module Cribbage
   # class to hold a card. both rank and suit are 1-based.
-Card = Struct.new( :rank, :suit ) do
+  Card = Struct.new( :rank, :suit ) do
     HEARTS    = 1
     CLUBS     = 2
     DIAMONDS  = 3
